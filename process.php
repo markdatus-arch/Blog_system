@@ -1,19 +1,24 @@
 <?php
-include "connectiondb.php"; // ✅ IMPORT DATABASE CONNECTION
+include "connectiondb.php";
 
-if(isset($_POST['title']) && isset($_POST['content'])){
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $title = $_POST['title'];
-    $content = $_POST['content'];
+    $titlearea = $_POST['titlearea'] ?? '';
+    $contentarea = $_POST['contentarea'] ?? '';
 
-    $stmt = $conn->prepare("INSERT INTO posts (title, content) VALUES (?, ?)");
-    $stmt->bind_param("ss", $title, $content);
+    if (!empty($titlearea) && !empty($contentarea)) {
 
-    if($stmt->execute()){
-        echo "Saved successfully!";
+        $stmt = $conn->prepare("INSERT INTO posts (title, content) VALUES (?, ?)");
+        $stmt->bind_param("ss", $titlearea, $contentarea);
+
+        if ($stmt->execute()) {
+            echo "Saved successfully!";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+
     } else {
-        echo "Error: " . $stmt->error;
+        echo "All fields are required.";
     }
-
 }
 ?>

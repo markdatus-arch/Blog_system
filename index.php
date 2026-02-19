@@ -35,6 +35,7 @@ $conn->close();
 
 ?>
 
+<div id="postsContainer"></div>
 
      
 
